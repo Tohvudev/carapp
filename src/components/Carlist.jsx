@@ -1,11 +1,15 @@
+import React, { useEffect, useState } from 'react';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-material.css';
 import { AgGridReact } from 'ag-grid-react';
-import React, { useEffect, useState } from 'react';
 
 export default function Carlist() {
     const [cars, setCars] = useState([]);
-    const [gridApi, setGridApi] = useState(null); 
+    const [gridApi, setGridApi] = useState(null);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
 
     useEffect(() => {
         fetchData();
@@ -36,7 +40,7 @@ export default function Carlist() {
     ];
 
     const onGridReady = (params) => {
-        setGridApi(params.api); 
+        setGridApi(params.api);
     };
 
     const handleDeleteRow = (rowData) => {
@@ -48,11 +52,18 @@ export default function Carlist() {
             if (response.ok) {
                 const updatedCars = cars.filter(car => car._links.self.href.split('/').pop() !== carId);
                 setCars(updatedCars);
+                setSnackbarMessage('Car deleted successfully');
+                setSnackbarOpen(true);
             } else {
-                alert('Failed to delete car.');
+                setSnackbarMessage('Failed to delete car');
+                setSnackbarOpen(true);
             }
         })
         .catch(error => console.error('Error deleting car:', error));
+    };
+
+    const handleCloseSnackbar = () => {
+        setSnackbarOpen(false);
     };
 
     return (
@@ -65,6 +76,11 @@ export default function Carlist() {
                 pagination={true}
                 onGridReady={onGridReady}
             />
+            <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+                <MuiAlert elevation={6} variant="filled" onClose={handleCloseSnackbar} severity="success">
+                    {snackbarMessage}
+                </MuiAlert>
+            </Snackbar>
         </div>
     );
 }
