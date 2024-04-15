@@ -4,12 +4,15 @@ import MuiAlert from '@mui/material/Alert';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-material.css';
 import { AgGridReact } from 'ag-grid-react';
+import EditCarDialog from './EditCarDialog';
 
 export default function Carlist() {
     const [cars, setCars] = useState([]);
     const [gridApi, setGridApi] = useState(null);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [editDialogOpen, setEditDialogOpen] = useState(false);
+    const [selectedCar, setSelectedCar] = useState(null);
 
     useEffect(() => {
         fetchData();
@@ -34,7 +37,10 @@ export default function Carlist() {
             field: 'actions',
             width: 150,
             cellRenderer: (params) => (
-                <button onClick={() => handleDeleteRow(params.data)}>Delete</button>
+                <div>
+                    <button onClick={() => handleEditRow(params.data)}>Edit</button>
+                    <button onClick={() => handleDeleteRow(params.data)}>Delete</button>
+                </div>
             )
         }
     ];
@@ -62,6 +68,24 @@ export default function Carlist() {
         .catch(error => console.error('Error deleting car:', error));
     };
 
+    const handleEditRow = (rowData) => {
+        setSelectedCar(rowData);
+        setEditDialogOpen(true);
+    };
+
+    const handleUpdateCar = (updatedCar) => {
+        const updatedCars = cars.map(car => {
+            if (car.id === updatedCar.id) {
+                return updatedCar;
+            }
+            return car;
+        });
+        setCars(updatedCars);
+        setSnackbarMessage('Car updated successfully');
+        setSnackbarOpen(true);
+        window.location.reload();
+    };
+
     const handleCloseSnackbar = () => {
         setSnackbarOpen(false);
     };
@@ -76,6 +100,13 @@ export default function Carlist() {
                 pagination={true}
                 onGridReady={onGridReady}
             />
+            <EditCarDialog
+    open={editDialogOpen}
+    handleClose={() => setEditDialogOpen(false)}
+    car={selectedCar}
+    handleUpdateCar={handleUpdateCar}
+    cars={cars} 
+/>
             <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleCloseSnackbar}>
                 <MuiAlert elevation={6} variant="filled" onClose={handleCloseSnackbar} severity="success">
                     {snackbarMessage}
