@@ -38,8 +38,9 @@ export default function Carlist() {
             width: 200,
             cellRenderer: (params) => (
                 <div>
-                    <button onClick={() => handleEditRow(params.data)}>Edit</button>
-                    <button onClick={() => handleDeleteRow(params.data)}>Delete</button>
+                    <button onClick={() => handleEditRow(params.data)} style={{color: 'white', backgroundColor: 'rgb(144, 238, 144)'}}>Edit</button>
+                    <button onClick={() => handleDeleteRow(params.data)} style={{color: 'white', backgroundColor: 'red'}}>Delete</button>
+
                 </div>
             )
         }
