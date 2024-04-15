@@ -40,3 +40,18 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Additional styles for Ag-Grid */
+.ag-theme-material .ag-cell {
+  display: flex;
+  align-items: center;
+}
+
+.ag-theme-material .ag-cell-actions {
+  display: flex;
+  justify-content: center;
+}
+
+.ag-theme-material button {
+  margin: 0 5px;
+}
