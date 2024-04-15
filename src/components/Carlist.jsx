@@ -35,7 +35,7 @@ export default function Carlist() {
         {
             headerName: 'Actions',
             field: 'actions',
-            width: 150,
+            width: 200,
             cellRenderer: (params) => (
                 <div>
                     <button onClick={() => handleEditRow(params.data)}>Edit</button>
@@ -91,7 +91,7 @@ export default function Carlist() {
     };
 
     return (
-        <div className="ag-theme-material" style={{ height: '500px', width: '1100px' }}>
+        <div className="ag-theme-material" style={{ height: '700px', width: '1250px' }}>
             <AgGridReact
                 rowSelection="single"
                 animateRows={true}
