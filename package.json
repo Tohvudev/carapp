@@ -2,7 +2,7 @@
   "name": "carapp",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://tohvudev.github.io/carapp",
+  "homepage": "http://tohvudev.github.io/carapp",
   "type": "module",
   "scripts": {
     "predeploy": "npm run build",
